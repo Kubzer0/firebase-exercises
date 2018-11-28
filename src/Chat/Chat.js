@@ -21,8 +21,10 @@ class Chat extends React.Component {
     render() {
         return (
             <div>
-                <NewMessageForm 
-                value = {this.state.newMessageText}
+                <NewMessageForm
+                    value={this.state.newMessageText}
+                    inputHandler={this.inputHandler}
+                    onNewMessageAddClickHandler={this.onNewMessageAddClickHandler}
                 />
             </div>
         )
