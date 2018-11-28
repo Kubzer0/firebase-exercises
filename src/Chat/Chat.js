@@ -3,11 +3,34 @@ import { database } from '../firebaseConfig'
 
 import NewMessageForm from './NewMessageForm'
 
+const dbRef = database.ref('/chat-messages')
 
 class Chat extends React.Component {
 
     state = {
         newMessageText: ''
+    }
+
+    componentDidMount(){
+        dbRef.on(
+            'value',
+            snapshot => {
+                const messages = Object.entries(
+                  snapshot.val()
+                ).map(entry => ({
+                  ...entry[1],
+                  key: entry[0]
+                }))
+        
+                this.setState({ messages: messages })
+              }
+            )
+          }
+
+
+          
+    componentWillUnmount(){
+        dbRef.off()
     }
 
     inputHandler = (event) =>
@@ -16,7 +39,7 @@ class Chat extends React.Component {
         )
 
     onNewMessageAddClickHandler = () => {
-        database.ref('/chat-messages').push({
+        dbRef.push({
             text: this.state.newMessageText,
             timestamp: Date.now()
         })
