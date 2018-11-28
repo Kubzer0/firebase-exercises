@@ -17,11 +17,11 @@ class Counter extends React.Component {
     }
 
     incHandler = () => {
-        this.setState({ number: this.state.number + 1 })
+        database.ref('/counter').set(this.state.number + 1)
     }
 
     decHandler = () => {
-        this.setState({ number: this.state.number - 1 })
+        database.ref('/counter').set(this.state.number - 1)
     }
 
     render() {
