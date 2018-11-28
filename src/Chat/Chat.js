@@ -8,28 +8,29 @@ const dbRef = database.ref('/chat-messages')
 class Chat extends React.Component {
 
     state = {
-        newMessageText: ''
+        newMessageText: '',
+        messages: []
     }
 
-    componentDidMount(){
+    componentDidMount() {
         dbRef.on(
             'value',
             snapshot => {
                 const messages = Object.entries(
-                  snapshot.val()
+                    snapshot.val()
                 ).map(entry => ({
-                  ...entry[1],
-                  key: entry[0]
+                    ...entry[1],
+                    key: entry[0]
                 }))
-        
+
                 this.setState({ messages: messages })
-              }
-            )
-          }
+            }
+        )
+    }
 
 
-          
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         dbRef.off()
     }
 
@@ -56,6 +57,15 @@ class Chat extends React.Component {
                     inputHandler={this.inputHandler}
                     onNewMessageAddClickHandler={this.onNewMessageAddClickHandler}
                 />
+                {
+                    this.state.messages.map(message => (
+                        <div
+                            key={message.key}
+                        >
+                            {message.text}
+                        </div>
+                    ))
+                }
             </div>
         )
     }
